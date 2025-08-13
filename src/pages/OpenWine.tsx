@@ -1,7 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import styles from "../styles/Wine.module.css";
-import { NetWorkIp } from "../constants/constants";
 import chevron from "../assets/chevron.svg";
 
 const OpenWine = () => {
@@ -10,11 +9,16 @@ const OpenWine = () => {
 
   // 쿼리 파라미터 추출
   const queryParams = new URLSearchParams(location.search);
-  const wineNumber = queryParams.get("wine") || "0"; // 기본값은 0
+  const wineNumber = queryParams.get("wine") || "0";
 
   useEffect(() => {
-    const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
-    const socket = new WebSocket(protocol + NetWorkIp + "/ws");
+    // HTTPS면 wss://, HTTP면 ws://
+    const wsProtocol =
+      window.location.protocol === "https:" ? "wss://" : "ws://";
+    // host는 현재 접속 도메인 (Vercel 배포시 프록시를 통해 연결)
+    const wsUrl = `${wsProtocol}${window.location.host}/api/ws`;
+
+    const socket = new WebSocket(wsUrl);
 
     const pingInterval = setInterval(() => {
       if (socket.readyState === WebSocket.OPEN) {
@@ -23,7 +27,7 @@ const OpenWine = () => {
     }, 5000);
 
     socket.onopen = () => {
-      console.log("✅ WebSocket 연결됨");
+      console.log("✅ WebSocket 연결됨:", wsUrl);
     };
 
     socket.onmessage = (event) => {
@@ -55,7 +59,7 @@ const OpenWine = () => {
       <div className={styles.section}>
         <div className={styles.rectangle}>
           <img
-            src={"http://" + NetWorkIp + "/video_feed"}
+            src={`${window.location.protocol}//${window.location.host}/api/video_feed`}
             alt="Yolo Stream"
             className={styles.rectangle_img}
             crossOrigin="anonymous"
