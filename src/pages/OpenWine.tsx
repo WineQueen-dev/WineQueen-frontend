@@ -13,7 +13,8 @@ const OpenWine = () => {
   const wineNumber = queryParams.get("wine") || "0"; // 기본값은 0
 
   useEffect(() => {
-    const socket = new WebSocket("ws://" + NetWorkIp + "/ws");
+    const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+    const socket = new WebSocket(protocol + NetWorkIp + "/ws");
 
     const pingInterval = setInterval(() => {
       if (socket.readyState === WebSocket.OPEN) {
