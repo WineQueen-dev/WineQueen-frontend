@@ -2,7 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import styles from "../styles/Wine.module.css";
 import chevron from "../assets/chevron.svg";
-import { getWebSocketUrl, getHttpUrl, NetWorkIp } from "../constants/constants";
+import { getWebSocketUrl, getHttpUrl } from "../constants/constants";
 
 const OpenWine = () => {
   const navigate = useNavigate();
