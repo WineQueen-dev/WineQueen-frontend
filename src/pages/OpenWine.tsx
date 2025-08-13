@@ -50,7 +50,7 @@ const OpenWine = () => {
       <div className={styles.goback}>
         <img onClick={onClick} src={chevron} alt="뒤로가기" />
       </div>
-      <div className={styles.header}>{wineNumber}번 와인 개봉</div>
+      <div className={styles.header}>{wineNumber}. Open the Wine</div>
       <div className={styles.section}>
         <div className={styles.rectangle}>
           <img

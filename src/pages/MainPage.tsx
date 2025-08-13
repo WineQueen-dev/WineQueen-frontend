@@ -4,11 +4,11 @@ import styles from "../styles/MainPage.module.css";
 import Wine_1 from "../assets/Wine_1.svg";
 
 const formatDate = (dateStr: string | null) => {
-  if (!dateStr) return "밀봉 기록 없음";
+  if (!dateStr) return "No record of sealing";
   const date = new Date(dateStr);
   return isNaN(date.getTime())
-    ? "밀봉 기록 없음"
-    : `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+    ? "No record of sealing"
+    : `${date.getMonth() + 1}/${date.getDate()}, ${date.getFullYear()}`;
 };
 
 const MainPage = () => {
@@ -72,13 +72,13 @@ const MainPage = () => {
     <div className={styles.containerWrapper}>
       <div className={styles.header}>
         <div>
-          <span style={{ color: "#FFDB58" }}>개봉/밀봉</span>
-          <span style={{ color: "#FFF" }}>할</span>
-          <span style={{ color: "#2C001E" }}> 와인</span>
-          <span style={{ color: "#FFF" }}>을</span>
-        </div>
-        <div>
-          <span style={{ color: "#FFF" }}>선택해 주세요</span>
+          <div>
+            <span style={{ color: "#FFF" }}>Please select </span>
+            <span style={{ color: "#FFF" }}>the </span>
+            <span style={{ color: "#2C001E" }}>Wines</span>
+          </div>
+          <span style={{ color: "#FFF" }}>you would like to</span>
+          <span style={{ color: "#FFDB58" }}> Open/Seal</span>
         </div>
       </div>
 
@@ -92,7 +92,7 @@ const MainPage = () => {
               className={styles.button}
               onClick={handleOpen}
             >
-              개봉
+              Open
             </button>
             <button
               ref={(el) => {
@@ -101,7 +101,7 @@ const MainPage = () => {
               className={styles.button}
               onClick={handleClose}
             >
-              밀봉
+              Seal
             </button>
           </div>
 
@@ -110,7 +110,7 @@ const MainPage = () => {
           </div>
 
           <div className={styles.data}>
-            {startTime && <div>최근 밀봉 일시</div>}
+            {startTime && <div>Last sealed date</div>}
             <div>{formatDate(startTime)}</div>
             <button
               ref={(el) => {
@@ -119,7 +119,7 @@ const MainPage = () => {
               className={styles.button}
               onClick={handleReset}
             >
-              날짜 초기화
+              Reset Date
             </button>
           </div>
         </div>

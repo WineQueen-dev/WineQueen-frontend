@@ -50,7 +50,7 @@ const CloseWine = () => {
       <div className={styles.goback}>
         <img onClick={onClick} src={chevron} alt="뒤로가기" />
       </div>
-      <div className={styles.header}>{wineNumber}번 와인 밀봉</div>
+      <div className={styles.header}>{wineNumber}. Seal the Wine</div>
       <div className={styles.section}>
         <div className={styles.rectangle}>
           <img
@@ -60,7 +60,7 @@ const CloseWine = () => {
             crossOrigin="anonymous"
           />
         </div>
-        <div className={styles.sensor}>와인 속 기압</div>
+        <div className={styles.sensor}>atmospheric pressure in wine</div>
       </div>
     </div>
   );
