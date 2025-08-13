@@ -86,14 +86,18 @@ const MainPage = () => {
         <div className={styles.section}>
           <div>
             <button
-              ref={(el) => (buttonRefs.current[0] = el)}
+              ref={(el) => {
+                buttonRefs.current[0] = el;
+              }}
               className={styles.button}
               onClick={handleOpen}
             >
               개봉
             </button>
             <button
-              ref={(el) => (buttonRefs.current[1] = el)}
+              ref={(el) => {
+                buttonRefs.current[1] = el;
+              }}
               className={styles.button}
               onClick={handleClose}
             >
@@ -109,7 +113,9 @@ const MainPage = () => {
             {startTime && <div>최근 밀봉 일시</div>}
             <div>{formatDate(startTime)}</div>
             <button
-              ref={(el) => (buttonRefs.current[2] = el)}
+              ref={(el) => {
+                buttonRefs.current[2] = el;
+              }}
               className={styles.button}
               onClick={handleReset}
             >
