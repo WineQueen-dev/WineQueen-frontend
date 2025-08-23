@@ -21,38 +21,57 @@ const MainPage = () => {
   useEffect(() => {
     const socket = new WebSocket(getWebSocketUrl("/ws"));
 
-    const pingInterval = setInterval(() => {
-      if (socket.readyState === WebSocket.OPEN) {
-        socket.send("ping");
-      }
-    }, 5000);
+    // 연속 입력 방지용 (예: 300ms)
+    let lastAt = 0;
+    const COOLDOWN_MS = 300;
 
     socket.onopen = () => {
-      console.log("✅ WebSocket 연결됨:", getWebSocketUrl("/ws"));
+      console.log("✅ WS connected");
+      // 필요하면 ping 타이머
+      // pingTimer = setInterval(() => socket.readyState === 1 && socket.send("ping"), 5000);
     };
 
     socket.onmessage = (e) => {
-      const msg = JSON.parse(e.data);
-      console.log("recieve message");
-      if (msg.type === "button") {
-        console.log("button");
-        if (msg.value === 1) {
-          buttonRefs.current[0]?.click();
-          console.log("button1");
-        } else if (msg.value === 2) buttonRefs.current[1]?.click();
-        else if (msg.value === 3) buttonRefs.current[2]?.click();
+      // 1) JSON 아닌 메시지(ping/pong 등) 대비
+      let msg: any;
+      try {
+        msg = JSON.parse(e.data);
+      } catch {
+        // console.debug("non-JSON WS message:", e.data);
         return;
       }
+
+      // 2) 버튼 이벤트만 처리
+      if (msg?.type === "button") {
+        const now = Date.now();
+        if (now - lastAt < COOLDOWN_MS) return; // 디바운스
+        lastAt = now;
+
+        if (msg.value === 1) {
+          buttonRefs.current[0]?.click?.();
+          console.log("button1 click");
+        } else if (msg.value === 2) {
+          buttonRefs.current[1]?.click?.();
+          console.log("button2 click");
+        } else if (msg.value === 3) {
+          buttonRefs.current[2]?.click?.();
+          console.log("button3 click");
+        }
+      }
+
+      // 3) YOLO 스트림도 같은 WS로 온다면 여기서 분기해서 처리
+      // else if (msg?.detections) { ... }
     };
 
+    socket.onerror = (err) => console.error("WS error:", err);
     socket.onclose = () => {
-      console.log("❌ WebSocket 연결 종료");
-      clearInterval(pingInterval);
+      console.log("❌ WS closed");
+      // clearInterval(pingTimer);
     };
 
     return () => {
+      // clearInterval(pingTimer);
       socket.close();
-      clearInterval(pingInterval);
     };
   }, []);
 
