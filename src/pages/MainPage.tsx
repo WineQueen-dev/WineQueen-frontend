@@ -35,9 +35,10 @@ const MainPage = () => {
       const msg = JSON.parse(e.data);
       console.log("recieve message");
       if (msg.type === "button") {
+        console.log("button");
         if (msg.value === 1) {
           buttonRefs.current[0]?.click();
-          console.log("button");
+          console.log("button1");
         } else if (msg.value === 2) buttonRefs.current[1]?.click();
         else if (msg.value === 3) buttonRefs.current[2]?.click();
         return;
