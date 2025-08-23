@@ -23,6 +23,7 @@ const MainPage = () => {
     let msg: any;
     try {
       msg = JSON.parse(e.data);
+      console.log(msg);
     } catch {
       return;
     }
