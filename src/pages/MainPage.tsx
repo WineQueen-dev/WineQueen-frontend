@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState, useCallback } from "react";
 import styles from "../styles/MainPage.module.css";
 import Wine_1 from "../assets/Wine_1.svg";
+import { getWebSocketUrl, getHttpUrl } from "../constants/constants";
 
 const formatDate = (dateStr: string | null) => {
   if (!dateStr) return "No record of sealing";
@@ -16,6 +17,41 @@ const MainPage = () => {
   const [startTime, setStartTime] = useState<string | null>(null);
   const [focusedIndex, setFocusedIndex] = useState(0);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  useEffect(() => {
+    const socket = new WebSocket(getWebSocketUrl("/ws"));
+
+    const pingInterval = setInterval(() => {
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send("ping");
+      }
+    }, 5000);
+
+    socket.onopen = () => {
+      console.log("✅ WebSocket 연결됨:", getWebSocketUrl("/ws"));
+    };
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log("📡 YOLO 데이터 수신:", data);
+    };
+    socket.onmessage = (e) => {
+      const msg = JSON.parse(e.data);
+      if (msg.type === "button" && msg.value === 1) {
+        buttonRefs.current[0]?.click();
+      }
+    };
+
+    socket.onclose = () => {
+      console.log("❌ WebSocket 연결 종료");
+      clearInterval(pingInterval);
+    };
+
+    return () => {
+      socket.close();
+      clearInterval(pingInterval);
+    };
+  }, []);
 
   const setStorage = (value: string | null) => {
     if (value) localStorage.setItem("startTime", value);
