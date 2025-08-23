@@ -8,7 +8,7 @@ const formatDate = (dateStr: string | null) => {
   const date = new Date(dateStr);
   return isNaN(date.getTime())
     ? "No record of sealing"
-    : `${date.getMonth() + 1}/${date.getDate()}, ${date.getFullYear()}`;
+    : `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
 };
 
 const MainPage = () => {
