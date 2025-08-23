@@ -33,8 +33,14 @@ const MainPage = () => {
 
     socket.onmessage = (e) => {
       const msg = JSON.parse(e.data);
-      if (msg.type === "button" && msg.value === 1) {
-        buttonRefs.current[0]?.click();
+      console.log("메시지 받음");
+      if (msg.type === "button") {
+        if (msg.value === 1) {
+          buttonRefs.current[0]?.click();
+          console.log("버튼 눌림");
+        } else if (msg.value === 2) buttonRefs.current[1]?.click();
+        else if (msg.value === 3) buttonRefs.current[2]?.click();
+        return;
       }
     };
 
