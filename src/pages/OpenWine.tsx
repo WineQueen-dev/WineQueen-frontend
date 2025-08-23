@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import styles from "../styles/Wine.module.css";
 import chevron from "../assets/chevron.svg";
 import { getWebSocketUrl, getHttpUrl } from "../constants/constants";
+import { subscribeWS } from "../lib/ws";
 
 const OpenWine = () => {
   const navigate = useNavigate();
@@ -12,32 +13,21 @@ const OpenWine = () => {
   const wineNumber = queryParams.get("wine") || "0";
 
   useEffect(() => {
-    const socket = new WebSocket(getWebSocketUrl("/ws"));
-
-    const pingInterval = setInterval(() => {
-      if (socket.readyState === WebSocket.OPEN) {
-        socket.send("ping");
+    const off = subscribeWS(getWebSocketUrl("/ws"), (e) => {
+      let msg: any;
+      try {
+        msg = JSON.parse(e.data);
+      } catch {
+        return;
       }
-    }, 5000);
-
-    socket.onopen = () => {
-      console.log("✅ WebSocket 연결됨:", getWebSocketUrl("/ws"));
-    };
-
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      console.log("📡 YOLO 데이터 수신:", data);
-    };
-
-    socket.onclose = () => {
-      console.log("❌ WebSocket 연결 종료");
-      clearInterval(pingInterval);
-    };
-
+      if ("detections" in msg) {
+        // 필요시 감지 데이터 처리/표시
+        // console.log("YOLO:", msg);
+      }
+    });
     return () => {
-      socket.close();
-      clearInterval(pingInterval);
-    };
+      off();
+    }; // 구독만 해제
   }, []);
 
   const onClick = () => {
