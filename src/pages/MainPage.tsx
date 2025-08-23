@@ -31,10 +31,6 @@ const MainPage = () => {
       console.log("✅ WebSocket 연결됨:", getWebSocketUrl("/ws"));
     };
 
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      console.log("📡 YOLO 데이터 수신:", data);
-    };
     socket.onmessage = (e) => {
       const msg = JSON.parse(e.data);
       if (msg.type === "button" && msg.value === 1) {
