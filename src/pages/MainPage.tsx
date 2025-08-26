@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState, useCallback } from "react";
 import styles from "../styles/MainPage.module.css";
 import Wine_1 from "../assets/Wine_1.svg";
-import { getWebSocketUrl, getHttpUrl } from "../constants/constants";
+import { getWebSocketUrl } from "../constants/constants";
 import { subscribeWS } from "../lib/ws";
 
 const formatDate = (dateStr: string | null) => {
@@ -55,13 +55,13 @@ const MainPage = () => {
     else localStorage.removeItem("startTime");
   };
 
-  const handleOpen = () => navigate("/open?wine=1");
+  const handleOpen = () => navigate("/main/open");
 
   const handleClose = () => {
     const now = new Date().toISOString();
     setStartTime(now);
     setStorage(now);
-    navigate("/close?wine=1");
+    navigate("/main/confirmseal");
   };
 
   const handleReset = () => {
@@ -105,36 +105,38 @@ const MainPage = () => {
     <div className={styles.containerWrapper}>
       <div className={styles.header}>
         <div>
-          <div>
-            <span style={{ color: "#FFF" }}>Please select </span>
-            <span style={{ color: "#FFF" }}>the </span>
-            <span style={{ color: "#2C001E" }}>Wines</span>
-          </div>
-          <span style={{ color: "#FFF" }}>you would like to</span>
-          <span style={{ color: "#FFDB58" }}> Open/Seal</span>
+          <span style={{ color: "#FFF" }}>Please select </span>
+          <span style={{ color: "#FFF" }}>the </span>
+        </div>
+        <div>
+          <span style={{ color: "#FFDB58" }}> Seal </span>
+          <span style={{ color: "#FFF" }}>or</span>
+          <span style={{ color: "#FFDB58" }}> Open </span>
+          <span style={{ color: "#2C001E" }}>Wine </span>
+          <span style={{ color: "#FFF" }}>button.</span>
         </div>
       </div>
 
       <div className={styles.wrapper}>
         <div className={styles.section}>
-          <div>
+          <div className={styles.button_wrapper}>
             <button
               ref={(el) => {
                 buttonRefs.current[0] = el;
               }}
               className={styles.button}
-              onClick={handleOpen}
+              onClick={handleClose}
             >
-              Open
+              Seal
             </button>
             <button
               ref={(el) => {
                 buttonRefs.current[1] = el;
               }}
               className={styles.button}
-              onClick={handleClose}
+              onClick={handleOpen}
             >
-              Seal
+              Open
             </button>
           </div>
 
