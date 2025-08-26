@@ -1,18 +1,13 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import styles from "../styles/Wine.module.css";
 import { NetWorkIp } from "../constants/constants";
 import chevron from "../assets/chevron.svg";
 import { subscribeWS } from "../lib/ws";
-import { getWebSocketUrl, getHttpUrl } from "../constants/constants";
+import { getWebSocketUrl } from "../constants/constants";
 
 const CloseWine = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // 쿼리 파라미터 추출
-  const queryParams = new URLSearchParams(location.search);
-  const wineNumber = queryParams.get("wine") || "0"; // 기본값은 0
 
   useEffect(() => {
     const off = subscribeWS(getWebSocketUrl("/ws"), (e) => {
@@ -41,7 +36,7 @@ const CloseWine = () => {
       <div className={styles.goback}>
         <img onClick={onClick} src={chevron} alt="뒤로가기" />
       </div>
-      <div className={styles.header}>{wineNumber}. Seal the Wine</div>
+      <div className={styles.header}>Seal the Wine</div>
       <div className={styles.section}>
         <div className={styles.rectangle}>
           <img

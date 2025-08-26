@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import styles from "../styles/Wine.module.css";
 import chevron from "../assets/chevron.svg";
@@ -7,10 +7,6 @@ import { subscribeWS } from "../lib/ws";
 
 const OpenWine = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const queryParams = new URLSearchParams(location.search);
-  const wineNumber = queryParams.get("wine") || "0";
 
   useEffect(() => {
     const off = subscribeWS(getWebSocketUrl("/ws"), (e) => {
@@ -39,7 +35,7 @@ const OpenWine = () => {
       <div className={styles.goback}>
         <img onClick={onClick} src={chevron} alt="뒤로가기" />
       </div>
-      <div className={styles.header}>{wineNumber}. Open the Wine</div>
+      <div className={styles.header}>Open the Wine</div>
       <div className={styles.section}>
         <div className={styles.rectangle}>
           <img
