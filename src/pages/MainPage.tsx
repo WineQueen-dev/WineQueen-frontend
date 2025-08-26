@@ -35,19 +35,13 @@ const MainPage = () => {
       else if (msg.value === 3) buttonRefs.current[2]?.click?.();
       return;
     }
-
-    // YOLO 스트림이 같은 소켓으로 오면 여기서 분기
-    if ("detections" in msg) {
-      // 필요시 상태 저장/표시
-      // console.log("YOLO:", msg);
-    }
   }, []);
 
   useEffect(() => {
     const off = subscribeWS(getWebSocketUrl("/ws"), handleWSMessage);
     return () => {
       off();
-    }; // 구독만 해제 (소켓은 유지)
+    };
   }, [handleWSMessage]);
 
   const setStorage = (value: string | null) => {
