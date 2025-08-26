@@ -86,3 +86,9 @@ body {
   color: #fff;
   border-radius: 10%;
 }
+
+.button_wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
