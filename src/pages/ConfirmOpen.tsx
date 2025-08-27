@@ -4,13 +4,13 @@ import { useEffect, useCallback, useState, useRef } from "react";
 import { getWebSocketUrl } from "../constants/constants";
 import { subscribeWS } from "../lib/ws";
 
-const ConfirmSeal = () => {
+const ConfirmOpen = () => {
   const navigate = useNavigate();
   const [focusedIndex, setFocusedIndex] = useState(0);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const handleClose = () => {
-    navigate("/main/confirmseal/close");
+    navigate("/main/confirmopen/open");
   };
   const handleCancel = () => {
     navigate("/main");
@@ -113,4 +113,4 @@ const ConfirmSeal = () => {
   );
 };
 
-export default ConfirmSeal;
+export default ConfirmOpen;

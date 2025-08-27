@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import styles from "../styles/Wine.module.css";
 import { NetWorkIp } from "../constants/constants";
 import chevron from "../assets/chevron.svg";
@@ -8,28 +8,59 @@ import { getWebSocketUrl } from "../constants/constants";
 
 const CloseWine = () => {
   const navigate = useNavigate();
+  const firedRef = useRef(false);
+
+  const onClick = useCallback(() => {
+    navigate("/main");
+  }, [navigate]);
+
+  const fireOnce = useCallback(() => {
+    if (firedRef.current) return;
+    firedRef.current = true;
+    onClick();
+  }, [onClick]);
 
   useEffect(() => {
     const off = subscribeWS(getWebSocketUrl("/ws"), (e) => {
-      let msg: any;
-      try {
-        msg = JSON.parse(e.data);
-      } catch {
-        return;
-      }
-      if ("detections" in msg) {
-        // 필요시 감지 데이터 처리/표시
-        // console.log("YOLO:", msg);
-      }
-    });
-    return () => {
-      off();
-    }; // 구독만 해제
-  }, []);
+      let data: any = e.data;
 
-  const onClick = () => {
-    navigate("/main");
-  };
+      // 문자열 프레임 처리 ("1"/"ping" 등)
+      if (typeof data === "string") {
+        const t = data.trim?.();
+        if (t === "1") {
+          fireOnce();
+          return;
+        } // 1만 처리
+        if (t === "ping" || t === "pong") return; // 하트비트 무시
+        try {
+          data = JSON.parse(t);
+        } catch {
+          return;
+        }
+      }
+
+      // JSON 프레임 처리
+      if (data?.type === "button" && Number(data.value) === 1) {
+        fireOnce(); // 1만 처리
+      }
+
+      // detections 필요 시 사용
+      // if (data?.type === "detections") { ... }
+    });
+
+    return () => off();
+  }, [fireOnce]);
+
+  // 키보드로도 1만 실행 (테스트/대안용)
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => {
+      if (e.key === "1" || e.code === "Digit1" || e.code === "Numpad1") {
+        fireOnce();
+      }
+    };
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
+  }, [fireOnce]);
 
   return (
     <div className={styles.wrapper}>
