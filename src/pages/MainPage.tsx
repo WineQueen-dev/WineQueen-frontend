@@ -21,22 +21,21 @@ const MainPage = () => {
 
   const handleWSMessage = useCallback((e: MessageEvent) => {
     let data = e.data;
-
-    // 1) 문자열이면 우선 그대로 살펴봄
     if (typeof data === "string") {
-      // if (data === "ping" || data === "pong") return; // 하트비트 무시
       try {
-        data = JSON.parse(data); // JSON 시도
+        data = JSON.parse(data);
       } catch {
-        console.log("WS text:", data); // JSON 아니면 일단 로그로 관찰
+        console.log("WS text:", data);
         return;
       }
     }
-
-    // 2) JSON 형태 처리
     if (data?.type === "button") {
-      const idx = Number(data.value) - 1; // 1 → 0, 2 → 1, 3 → 2
+      const idx = Number(data.value) - 1;
       buttonRefs.current[idx]?.click?.();
+    }
+    // 필요하면 detections도 디버깅용 로그
+    if (data?.type === "detections") {
+      // console.debug("detections tick", data.timestamp);
     }
   }, []);
 
