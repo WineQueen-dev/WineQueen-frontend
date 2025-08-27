@@ -3,8 +3,6 @@ import MainPage from "../pages/MainPage";
 import Splash from "../pages/Splash";
 import OpenWine from "../pages/OpenWine";
 import CloseWine from "../pages/CloseWine";
-import ConfirmSeal from "../pages/ConfirmSeal";
-import ConfirmOpen from "../pages/ConfirmOpen";
 
 const router = createBrowserRouter([
   {
@@ -16,20 +14,12 @@ const router = createBrowserRouter([
     element: <Splash />,
   },
   {
-    path: "/main/confirmopen/open",
+    path: "/main/open",
     element: <OpenWine />,
   },
   {
-    path: "/main/confirmseal/close",
+    path: "/main/close",
     element: <CloseWine />,
-  },
-  {
-    path: "/main/confirmseal",
-    element: <ConfirmSeal />,
-  },
-  {
-    path: "/main/confirmopen",
-    element: <ConfirmOpen />,
   },
 ]);
 

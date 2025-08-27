@@ -63,13 +63,13 @@ const MainPage = () => {
     else localStorage.removeItem("startTime");
   };
 
-  const handleOpen = () => navigate("/main/confirmopen");
+  const handleOpen = () => navigate("/main/open");
 
   const handleClose = () => {
     const now = new Date().toISOString();
     setStartTime(now);
     setStorage(now);
-    navigate("/main/confirmseal");
+    navigate("/main/close");
   };
 
   const handleReset = () => {
