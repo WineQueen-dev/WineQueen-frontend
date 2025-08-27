@@ -19,8 +19,14 @@ const MainPage = () => {
   const [focusedIndex, setFocusedIndex] = useState(0);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
+  const focusedIndexRef = useRef(0);
+  useEffect(() => {
+    focusedIndexRef.current = focusedIndex;
+  }, [focusedIndex]);
+
   const handleWSMessage = useCallback((e: MessageEvent) => {
     let data = e.data;
+
     if (typeof data === "string") {
       try {
         data = JSON.parse(data);
@@ -29,13 +35,31 @@ const MainPage = () => {
         return;
       }
     }
+
     if (data?.type === "button") {
-      const idx = Number(data.value) - 1;
-      buttonRefs.current[idx]?.click?.();
-    }
-    // 필요하면 detections도 디버깅용 로그
-    if (data?.type === "detections") {
-      // console.debug("detections tick", data.timestamp);
+      const v = Number(data.value);
+
+      // 총 버튼 개수 (현재 3개)
+      const N = buttonRefs.current.length || 3;
+
+      if (v === 1) {
+        // ◀️ 왼쪽으로 포커스 이동
+        setFocusedIndex((prev) => (prev - 1 + N) % N);
+        return;
+      }
+
+      if (v === 3) {
+        // ▶️ 오른쪽으로 포커스 이동
+        setFocusedIndex((prev) => (prev + 1) % N);
+        return;
+      }
+
+      if (v === 2) {
+        // ⏎ 현재 포커스된 버튼 실행
+        const idx = focusedIndexRef.current;
+        buttonRefs.current[idx]?.click?.();
+        return;
+      }
     }
   }, []);
 
