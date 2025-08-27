@@ -63,7 +63,7 @@ const MainPage = () => {
     else localStorage.removeItem("startTime");
   };
 
-  const handleOpen = () => navigate("/main/open");
+  const handleOpen = () => navigate("/main/confirmopen");
 
   const handleClose = () => {
     const now = new Date().toISOString();
