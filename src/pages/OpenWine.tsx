@@ -26,7 +26,7 @@ const OpenWine = () => {
       // 문자열 프레임 처리
       if (typeof data === "string") {
         const t = data.trim?.();
-        if (t === "1") {
+        if (t === "3") {
           fireOnce();
           return;
         } // 1만 처리
