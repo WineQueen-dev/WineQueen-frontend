@@ -20,20 +20,23 @@ const MainPage = () => {
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const handleWSMessage = useCallback((e: MessageEvent) => {
-    let msg: any;
-    try {
-      msg = JSON.parse(e.data);
-      console.log(msg);
-    } catch {
-      return;
+    let data = e.data;
+
+    // 1) 문자열이면 우선 그대로 살펴봄
+    if (typeof data === "string") {
+      // if (data === "ping" || data === "pong") return; // 하트비트 무시
+      try {
+        data = JSON.parse(data); // JSON 시도
+      } catch {
+        console.log("WS text:", data); // JSON 아니면 일단 로그로 관찰
+        return;
+      }
     }
 
-    // 버튼 이벤트
-    if (msg?.type === "button") {
-      if (msg.value === 1) buttonRefs.current[0]?.click?.();
-      else if (msg.value === 2) buttonRefs.current[1]?.click?.();
-      else if (msg.value === 3) buttonRefs.current[2]?.click?.();
-      return;
+    // 2) JSON 형태 처리
+    if (data?.type === "button") {
+      const idx = Number(data.value) - 1; // 1 → 0, 2 → 1, 3 → 2
+      buttonRefs.current[idx]?.click?.();
     }
   }, []);
 
@@ -63,7 +66,7 @@ const MainPage = () => {
     setStorage(null);
   };
 
-  const buttonActions = [handleOpen, handleClose, handleReset];
+  const buttonActions = [handleClose, handleOpen, handleReset];
 
   // 초기값 로드
   useEffect(() => {
