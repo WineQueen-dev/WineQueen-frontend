@@ -41,9 +41,25 @@ const MainPage = () => {
   }, []);
 
   useEffect(() => {
-    const off = subscribeWS(getWebSocketUrl("/ws"), handleWSMessage);
+    const url = getWebSocketUrl("/ws");
+    // A) 원본 그대로 보기 (항상 출력)
+    const offRaw = subscribeWS(url, (e) => {
+      const d = e.data;
+      // 메시지 타입/길이까지 같이 출력
+      if (typeof d === "string") {
+        console.debug("[WS RAW text]", d);
+      } else if (d instanceof Blob) {
+        console.debug("[WS RAW blob]", d);
+      } else if (d instanceof ArrayBuffer) {
+        console.debug("[WS RAW buffer]", new Uint8Array(d));
+      } else {
+        console.debug("[WS RAW]", d);
+      }
+    });
+    const off = subscribeWS(url, handleWSMessage);
     return () => {
       off();
+      offRaw();
     };
   }, [handleWSMessage]);
 
