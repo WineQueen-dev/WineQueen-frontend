@@ -61,6 +61,13 @@ const OpenWine = () => {
     return () => window.removeEventListener("keydown", h);
   }, [fireOnce]);
 
+  useEffect(() => {
+    fetch(getHttpUrl("/control/open"), { method: "POST" }).catch(() => {});
+    return () => {
+      fetch(getHttpUrl("/control/stop"), { method: "POST" }).catch(() => {});
+    };
+  }, []);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.goback}>

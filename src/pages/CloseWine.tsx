@@ -4,7 +4,7 @@ import styles from "../styles/Wine.module.css";
 import { NetWorkIp } from "../constants/constants";
 import chevron from "../assets/chevron.svg";
 import { subscribeWS } from "../lib/ws";
-import { getWebSocketUrl } from "../constants/constants";
+import { getWebSocketUrl, getHttpUrl } from "../constants/constants";
 
 const CloseWine = () => {
   const navigate = useNavigate();
@@ -51,16 +51,23 @@ const CloseWine = () => {
     return () => off();
   }, [fireOnce]);
 
-  // 키보드로도 1만 실행 (테스트/대안용)
+  // 키보드로도 3만 실행 (테스트/대안용)
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
-      if (e.key === "1" || e.code === "Digit1" || e.code === "Numpad1") {
+      if (e.key === "3" || e.code === "Digit3" || e.code === "Numpad3") {
         fireOnce();
       }
     };
     window.addEventListener("keydown", h);
     return () => window.removeEventListener("keydown", h);
   }, [fireOnce]);
+
+  useEffect(() => {
+    fetch(getHttpUrl("/control/seal"), { method: "POST" }).catch(() => {});
+    return () => {
+      fetch(getHttpUrl("/control/stop"), { method: "POST" }).catch(() => {});
+    };
+  }, []);
 
   return (
     <div className={styles.wrapper}>
