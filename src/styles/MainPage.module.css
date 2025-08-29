@@ -10,7 +10,7 @@ body {
   justify-content: center;
   flex-shrink: 0;
   font-size: 64px;
-  margin-top: 120px;
+  margin-top: 10px;
   margin-bottom: 109px;
   font-weight: 800;
   align-items: center;
@@ -19,6 +19,7 @@ body {
 .containerWrapper {
   width: 100%;
   padding: 12px;
+  padding-top: 40px;
 }
 
 .wrapper {
@@ -107,4 +108,20 @@ body {
   background-color: #6e001e;
   color: #fff;
   border-radius: 10%;
+}
+
+.topbar {
+  position: sticky; /* 스크롤해도 상단 고정하고 싶으면 */
+  top: 0;
+  z-index: 20;
+  width: 100%;
+  padding: 6px 12px;
+  text-align: center;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 28px;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums; /* 숫자 정렬 깔끔 */
+  backdrop-filter: blur(4px); /* 선택: 유리 효과 */
 }

@@ -5,6 +5,17 @@ import Wine_1 from "../assets/Wine_1.svg";
 import { getWebSocketUrl } from "../constants/constants";
 import { subscribeWS } from "../lib/ws";
 
+const formatNow = (d: Date) => {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  const weekday = d.toLocaleDateString(undefined, { weekday: "short" }); // ex) Mon / 월
+  const hh = String(d.getHours()).padStart(2, "0");
+  const mm = String(d.getMinutes()).padStart(2, "0");
+  const ss = String(d.getSeconds()).padStart(2, "0");
+  return `${y}/${m}/${day} (${weekday}) ${hh}:${mm}:${ss}`;
+};
+
 const formatDate = (dateStr: string | null) => {
   if (!dateStr) return "No record of sealing";
   const date = new Date(dateStr);
@@ -15,9 +26,15 @@ const formatDate = (dateStr: string | null) => {
 
 const MainPage = () => {
   const navigate = useNavigate();
+  const [currentTime, setCurrentTime] = useState(() => new Date());
   const [startTime, setStartTime] = useState<string | null>(null);
   const [focusedIndex, setFocusedIndex] = useState(0);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  useEffect(() => {
+    const id = window.setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => window.clearInterval(id);
+  }, []);
 
   const handleWSMessage = useCallback((e: MessageEvent) => {
     let data = e.data;
@@ -111,6 +128,9 @@ const MainPage = () => {
 
   return (
     <div className={styles.containerWrapper}>
+      <div className={styles.topbar} role="timer" aria-live="polite">
+        {formatNow(currentTime)}
+      </div>
       <div className={styles.header}>
         <div>
           <span style={{ color: "#FFF" }}>Please select </span>
