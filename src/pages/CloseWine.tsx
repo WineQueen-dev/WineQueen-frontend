@@ -40,7 +40,7 @@ const CloseWine = () => {
       }
 
       // JSON 프레임 처리
-      if (data?.type === "button" && Number(data.value) === 1) {
+      if (data?.type === "button" && Number(data.value) === 3) {
         fireOnce(); // 1만 처리
       }
 
@@ -84,7 +84,7 @@ const CloseWine = () => {
             crossOrigin="anonymous"
           />
         </div>
-        <div className={styles.sensor}>atmospheric pressure in wine</div>
+        <div className={styles.sensor}>atmospheric pressure | </div>
       </div>
     </div>
   );

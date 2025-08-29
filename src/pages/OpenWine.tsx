@@ -39,7 +39,7 @@ const OpenWine = () => {
       }
 
       // JSON 프레임 처리
-      if (data?.type === "button" && Number(data.value) === 1) {
+      if (data?.type === "button" && Number(data.value) === 3) {
         fireOnce(); // 1만 처리
       }
 
@@ -53,7 +53,7 @@ const OpenWine = () => {
   // 키보드로도 1만 실행 (테스트/대안용)
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
-      if (e.key === "1" || e.code === "Digit1" || e.code === "Numpad1") {
+      if (e.key === "3" || e.code === "Digit3" || e.code === "Numpad3") {
         fireOnce();
       }
     };
