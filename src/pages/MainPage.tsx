@@ -80,7 +80,10 @@ const MainPage = () => {
     else localStorage.removeItem("startTime");
   };
 
-  const handleOpen = () => navigate("/main/open");
+  const handleOpen = () => {
+    navigate("/main/open");
+    handleReset();
+  };
 
   const handleClose = () => {
     const now = new Date().toISOString();
@@ -175,15 +178,6 @@ const MainPage = () => {
           <div className={styles.data}>
             {startTime && <div>Last sealed date</div>}
             <div>{formatDate(startTime)}</div>
-            <button
-              ref={(el) => {
-                buttonRefs.current[2] = el;
-              }}
-              className={styles.button}
-              onClick={handleReset}
-            >
-              Reset Date
-            </button>
           </div>
         </div>
       </div>
