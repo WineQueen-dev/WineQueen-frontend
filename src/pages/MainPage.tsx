@@ -39,20 +39,51 @@ const MainPage = () => {
   }, []);
 
   const handleWSMessage = useCallback((e: MessageEvent) => {
-    let data = e.data;
-    if (typeof data === "string") {
+    let d: unknown = e.data;
+
+    // 문자열 프레임(하트비트/레거시) 처리
+    if (typeof d === "string") {
+      const t = d.trim?.();
+      if (t === "ping" || t === "pong") return;
       try {
-        data = JSON.parse(data);
+        d = JSON.parse(t);
       } catch {
-        console.log("WS text:", data);
+        const n = Number(t);
+        if (!Number.isNaN(n)) {
+          const idx = n - 1;
+          if (idx >= 0) buttonRefs.current[idx]?.click?.();
+        }
         return;
       }
     }
-    if (data?.type === "button") {
-      const idx = Number(data.value) - 1;
-      buttonRefs.current[idx]?.click?.();
+
+    if (!d || typeof d !== "object") return;
+    const msg = d as any;
+
+    switch (msg.type) {
+      case "button": {
+        const idx = Number(msg.value) - 1;
+        if (idx >= 0) buttonRefs.current[idx]?.click?.();
+        break;
+      }
+      case "redirect": {
+        // 서버가 "/seal" | "/open" 을 보냄 → 그대로 이동
+        const page = String(msg.page || "");
+        if (page === "/seal") {
+          const now = new Date().toISOString();
+          setStartTime(now);
+          setStorage(now);
+          navigate(page);
+        } else if (page === "/open") {
+          handleReset();
+          navigate(page);
+        }
+        break;
+      }
+      default:
+        break;
     }
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     const url = getWebSocketUrl("/ws");
