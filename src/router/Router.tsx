@@ -14,11 +14,11 @@ const router = createBrowserRouter([
     element: <Splash />,
   },
   {
-    path: "/main/open",
+    path: "/open",
     element: <OpenWine />,
   },
   {
-    path: "/main/close",
+    path: "/seal",
     element: <CloseWine />,
   },
 ]);

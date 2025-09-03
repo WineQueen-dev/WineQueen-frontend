@@ -83,7 +83,7 @@ const MainPage = () => {
   };
 
   const handleOpen = () => {
-    navigate("/main/open");
+    navigate("/open");
     handleReset();
   };
 
@@ -91,7 +91,7 @@ const MainPage = () => {
     const now = new Date().toISOString();
     setStartTime(now);
     setStorage(now);
-    navigate("/main/close");
+    navigate("/seal");
   };
 
   const handleReset = () => {
