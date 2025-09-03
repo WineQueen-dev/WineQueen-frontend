@@ -21,7 +21,9 @@ const formatDate = (dateStr: string | null) => {
   const date = new Date(dateStr);
   return isNaN(date.getTime())
     ? "No record of sealing"
-    : `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+    : `${date.getFullYear()}/${
+        date.getMonth() + 1
+      }/${date.getDate()} , ${date.getHours()}:${date.getMinutes()}`;
 };
 
 const MainPage = () => {
