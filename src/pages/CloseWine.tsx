@@ -84,7 +84,6 @@ const CloseWine = () => {
             crossOrigin="anonymous"
           />
         </div>
-        <div className={styles.sensor}>atmospheric pressure | </div>
       </div>
     </div>
   );

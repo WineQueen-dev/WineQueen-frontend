@@ -50,16 +50,3 @@
   object-fit: cover;
   border-radius: 12px;
 }
-
-/* 센서 박스 */
-.sensor {
-  width: 500px;
-  height: 100px;
-  flex-shrink: 0;
-  border-radius: 15px;
-  background: #2c001e;
-  color: #fff;
-  font-size: 32px;
-  text-align: center;
-  line-height: 100px;
-}
